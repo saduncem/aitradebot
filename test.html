@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesapla Kazan</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg">
+    <!-- Header -->
+    <header class="bg-white/10 backdrop-blur-md border-b border-white/20">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-white">Hesapla Kazan</h1>
+                    <p class="text-white/80 text-sm md:text-base">Kredini ve Mevduat Gelirini Hesapla, Hem de Aynı Anda!</p>
+                </div>
+                <div class="flex gap-2 md:gap-4 text-xs md:text-sm">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg px-2 md:px-3 py-2">
+                        <span class="text-white/70">USD</span>
+                        <div class="text-white font-semibold">
+                            <span class="text-green-300">Alış:</span> 39.5391<br>
+                            <span class="text-red-300">Satış:</span> 40.1769
+                        </div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg px-2 md:px-3 py-2">
+                        <span class="text-white/70">EUR</span>
+                        <div class="text-white font-semibold">
+                            <span class="text-green-300">Alış:</span> 46.5853<br>
+                            <span class="text-red-300">Satış:</span> 47.3367
+                        </div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg px-2 md:px-3 py-2">
+                        <span class="text-white/70">GBP</span>
+                        <div class="text-white font-semibold">
+                            <span class="text-green-300">Alış:</span> 53.9866<br>
+                            <span class="text-red-300">Satış:</span> 54.8574
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            
+            <!-- Kredi Borcumu Hesapla -->
+            <div class="bg-white rounded-2xl card-shadow hover-lift transition-all p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <span class="text-green-600 text-xl">💳</span>
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800">Kredi Borcumu Hesapla</h2>
+                </div>
+                
+                <form class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tutar (₺)</label>
+                        <input type="text" 
+                               placeholder="Örn: 50000" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               id="kredi-tutar">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kredi Tipi</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" 
+                                id="kredi-tipi">
+                            <option>İhtiyaç Kredisi</option>
+                            <option>Konut Kredisi</option>
+                            <option>Taşıt Kredisi</option>
+                            <option>Ticari Kredi</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Vade (Ay)</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" 
+                                id="kredi-vade">
+                            <option>3 ay</option>
+                            <option>6 ay</option>
+                            <option>12 ay</option>
+                            <option>24 ay</option>
+                            <option>36 ay</option>
+                            <option>48 ay</option>
+                            <option>60 ay</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                            onclick="hesaplaKredi()">
+                        Hesapla
+                    </button>
+                </form>
+                
+                <div id="kredi-sonuc" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
+                    <h3 class="font-semibold text-gray-800 mb-2">Hesaplama Sonucu:</h3>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>Aylık Taksit: <span class="font-semibold text-blue-600" id="aylik-taksit">-</span></div>
+                        <div>Toplam Geri Ödeme: <span class="font-semibold text-red-600" id="toplam-odeme">-</span></div>
+                        <div>Toplam Faiz: <span class="font-semibold text-orange-600" id="toplam-faiz">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Faiz Gelirimi Hesapla -->
+            <div class="bg-white rounded-2xl card-shadow hover-lift transition-all p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <span class="text-yellow-600 text-xl">💰</span>
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800">Faiz Gelirimi Hesapla</h2>
+                </div>
+                
+                <form class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tutar</label>
+                        <input type="text" 
+                               placeholder="Örn: 100000" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               id="mevduat-tutar">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Para Birimi</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" 
+                                id="para-birimi">
+                            <option>TL</option>
+                            <option>USD</option>
+                            <option>EUR</option>
+                            <option>GBP</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Vade (Gün)</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" 
+                                id="mevduat-vade">
+                            <option>32 gün</option>
+                            <option>64 gün</option>
+                            <option>91 gün</option>
+                            <option>182 gün</option>
+                            <option>365 gün</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                            onclick="hesaplaMevduat()">
+                        Hesapla
+                    </button>
+                </form>
+                
+                <div id="mevduat-sonuc" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
+                    <h3 class="font-semibold text-gray-800 mb-2">Hesaplama Sonucu:</h3>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>Faiz Geliri: <span class="font-semibold text-green-600" id="faiz-geliri">-</span></div>
+                        <div>Toplam Tutar: <span class="font-semibold text-blue-600" id="toplam-tutar">-</span></div>
+                        <div>Faiz Oranı: <span class="font-semibold text-purple-600" id="faiz-orani">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Disclaimer -->
+        <div class="mt-8 bg-white/20 backdrop-blur-sm rounded-xl p-6 text-white text-sm leading-relaxed">
+            <p class="mb-4">
+                <strong>Önemli Uyarı:</strong> hesaplakazan finansal ürünlerin karşılaştırılması ve başvuruların kullanıcılar tarafından bankalara yapılması konusunda fikir verir; kredilerin tahsisine ilişkin bir garanti veremez ve bankaların bağımsız şekilde gerçekleştirdiği değerlendirme sonuçlarından ötürü sorumlu tutulamaz.
+            </p>
+            <p>
+                Gösterilen faiz oranı ve sair detaylar bilgi amaçlı olup, kredi notumuza ve sigorta kullanım durumunuza göre değişkenlik gösterebilmektedir. Hesaplakazan'ın bu kapsamda herhangi bir sorumluluğu bulunmamaktadır.
+            </p>
+        </div>
+    </main>
+
+    <script>
+        // Kredi hesaplama fonksiyonu
+        function hesaplaKredi() {
+            const tutar = parseFloat(document.getElementById('kredi-tutar').value.replace(/[^\d]/g, ''));
+            const vade = parseInt(document.getElementById('kredi-vade').value);
+            const tip = document.getElementById('kredi-tipi').value;
+            
+            if (!tutar || !vade) {
+                alert('Lütfen tüm alanları doldurun.');
+                return;
+            }
+            
+            // Basit faiz hesaplama (gerçek bankacılık hesaplamaları daha karmaşıktır)
+            let faizOrani = 0.025; // %2.5 aylık
+            
+            if (tip === 'Konut Kredisi') faizOrani = 0.015;
+            else if (tip === 'Taşıt Kredisi') faizOrani = 0.02;
+            else if (tip === 'Ticari Kredi') faizOrani = 0.03;
+            
+            const aylikTaksit = tutar * (faizOrani * Math.pow(1 + faizOrani, vade)) / (Math.pow(1 + faizOrani, vade) - 1);
+            const toplamOdeme = aylikTaksit * vade;
+            const toplamFaiz = toplamOdeme - tutar;
+            
+            document.getElementById('aylik-taksit').textContent = aylikTaksit.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ₺';
+            document.getElementById('toplam-odeme').textContent = toplamOdeme.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ₺';
+            document.getElementById('toplam-faiz').textContent = toplamFaiz.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ₺';
+            
+            document.getElementById('kredi-sonuc').classList.remove('hidden');
+        }
+        
+        // Mevduat hesaplama fonksiyonu
+        function hesaplaMevduat() {
+            const tutar = parseFloat(document.getElementById('mevduat-tutar').value.replace(/[^\d]/g, ''));
+            const vade = parseInt(document.getElementById('mevduat-vade').value);
+            const paraBirimi = document.getElementById('para-birimi').value;
+            
+            if (!tutar || !vade) {
+                alert('Lütfen tüm alanları doldurun.');
+                return;
+            }
+            
+            // Basit faiz hesaplama
+            let yillikFaizOrani = 0.35; // %35 yıllık TL için
+            
+            if (paraBirimi === 'USD') yillikFaizOrani = 0.05;
+            else if (paraBirimi === 'EUR') yillikFaizOrani = 0.03;
+            else if (paraBirimi === 'GBP') yillikFaizOrani = 0.04;
+            
+            const gunlukFaizOrani = yillikFaizOrani / 365;
+            const faizGeliri = tutar * gunlukFaizOrani * vade;
+            const toplamTutar = tutar + faizGeliri;
+            
+            document.getElementById('faiz-geliri').textContent = faizGeliri.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ' + paraBirimi;
+            document.getElementById('toplam-tutar').textContent = toplamTutar.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ' + paraBirimi;
+            document.getElementById('faiz-orani').textContent = '%' + (yillikFaizOrani * 100).toFixed(1) + ' (yıllık)';
+            
+            document.getElementById('mevduat-sonuc').classList.remove('hidden');
+        }
+        
+        // Sayı formatlaması için input event listener'ları
+        document.getElementById('kredi-tutar').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            e.target.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        });
+        
+        document.getElementById('mevduat-tutar').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            e.target.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        });
+    </script>
+</body>
+</html>
