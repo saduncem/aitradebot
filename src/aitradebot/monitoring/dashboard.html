@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trade Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Equity Curve</h1>
+<canvas id="equity"></canvas>
+<script>
+const ctx = document.getElementById('equity');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{label: 'Equity', data: []}]
+    }
+});
+</script>
+</body>
+</html>
