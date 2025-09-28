@@ -1,7 +1,16 @@
-"""Database models for trading system."""
+"""Database models for the trading system.
+
+Defines SQLAlchemy ORM models for storing candlestick data, wallet
+assets, trade fills, and ledger entries.
+"""
+
+from __future__ import annotations
+
+from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime
-from sqlalchemy.orm import relationship
-from .database import Base
+from sqlalchemy.orm import declarative_base
+
+from .database import Base  # Import the declarative base from database.py
 
 
 class Candle(Base):
@@ -32,7 +41,7 @@ class TradeFill(Base):
     price = Column(Float)
     qty = Column(Float)
     fee = Column(Float, default=0.0)
-    timestamp = Column(DateTime)
+    timestamp = Column(DateTime, default=datetime.utcnow)
 
 
 class LedgerEntry(Base):
@@ -40,4 +49,4 @@ class LedgerEntry(Base):
     id = Column(Integer, primary_key=True, index=True)
     description = Column(String)
     amount = Column(Float)
-    timestamp = Column(DateTime)
+    timestamp = Column(DateTime, default=datetime.utcnow)

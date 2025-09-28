@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Trade Dashboard</title>
+    <!-- Include Chart.js from a CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <h1>Equity Curve</h1>
-<canvas id="equity"></canvas>
+<canvas id="equity" width="600" height="300"></canvas>
 <script>
+// Placeholder Chart.js initialization. Replace the empty data arrays
+// with actual equity values and timestamps from your trading log.
 const ctx = document.getElementById('equity');
 new Chart(ctx, {
     type: 'line',
     data: {
         labels: [],
-        datasets: [{label: 'Equity', data: []}]
-    }
+        datasets: [{
+            label: 'Equity',
+            data: [],
+        }],
+    },
 });
 </script>
 </body>
